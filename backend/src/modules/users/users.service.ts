@@ -6,23 +6,24 @@ import { User, Prisma } from '../../generated/client';
 export class UsersService {
     constructor(private prisma: PrismaService) { }
 
-    async findOne(email: string): Promise<User | null> {
+    async findOne(email: string) {
         return this.prisma.user.findUnique({
             where: { email },
             include: { profile: true, progress: true },
         });
     }
 
-    async findById(id: string): Promise<User | null> {
+    async findById(id: string) {
         return this.prisma.user.findUnique({
             where: { id },
             include: { profile: true, progress: true },
         });
     }
 
-    async create(data: Prisma.UserCreateInput): Promise<User> {
+    async create(data: Prisma.UserCreateInput) {
         return this.prisma.user.create({
             data,
+            include: { profile: true, progress: true },
         });
     }
 }

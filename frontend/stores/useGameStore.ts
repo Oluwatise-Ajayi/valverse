@@ -48,10 +48,11 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     updateGameScore: async (gameId, state) => {
         try {
-            await api.post(\`/progress/game/\${gameId}\`, state);
-      await get().fetchProgress();
-    } catch (error) {
-      console.error('Failed to update game score', error);
+            await api.post(`/progress/game/\${gameId}\
+            `, state);
+            await get().fetchProgress();
+        } catch (error) {
+            console.error('Failed to update game score', error);
+        }
     }
-  }
 }));

@@ -78,8 +78,12 @@ export default function LoveStoryRPG() {
     }
   };
 
+  if (!scene) {
+    return <div>Loading scene...</div>;
+  }
+
   return (
-    <div className={\`w-full h-full flex items-center justify-center p-8 transition-colors duration-500 \${scene.background}\`}>
+    <div className={`w-full h-full flex items-center justify-center p-8 transition-colors duration-500 \${scene.background}`}>
       <div className="max-w-2xl w-full bg-white/90 p-8 rounded-2xl shadow-2xl space-y-8">
         <AnimatePresence mode='wait'>
           <motion.div

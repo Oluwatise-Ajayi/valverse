@@ -92,7 +92,7 @@ export default function ScratchCard() {
           ref={canvasRef} 
           width={300} 
           height={300} 
-          className={\`absolute inset-0 z-10 cursor-pointer \${isRevealed ? 'pointer-events-none opacity-0 transition-opacity duration-1000' : ''}\`}
+          className={`absolute inset-0 z-10 cursor-pointer \${isRevealed ? 'pointer-events-none opacity-0 transition-opacity duration-1000' : ''}`}
         />
       </div>
       {isRevealed && <Button onClick={() => window.location.reload()}>Play Again</Button>}

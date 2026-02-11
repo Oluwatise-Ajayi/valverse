@@ -28,6 +28,6 @@ export class MediaService {
 
         // 2. Sign URL with Cloudinary (Mock implementation for now)
         // return cloudinary.url(media.url, { secure: true, sign_url: true, type: 'authenticated' });
-        return { url: \`https://res.cloudinary.com/demo/image/upload/\${media.url}\`, title: media.title };
-  }
+        return { url: `https://res.cloudinary.com/demo/image/upload/${media.url}`, title: media.title };
+    }
 }
