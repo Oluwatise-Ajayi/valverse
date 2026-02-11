@@ -1,0 +1,88 @@
+// backend/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  profile   Profile?
+  progress  Progress?
+  sessions  Session[]
+}
+
+model Profile {
+  id        String  @id @default(uuid())
+  userId    String  @unique
+  user      User    @relation(fields: [userId], references: [id])
+  nickname  String?
+  avatarUrl String?
+}
+
+model Progress {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id])
+  
+  // Stages
+  valentineAnswer Boolean @default(false) // Accepted to be Valentine
+  quizCompleted   Boolean @default(false)
+  quizScore       Int     @default(0)
+  
+  // Game States (JSON for flexibility)
+  gameStates     Json     @default("{}") // e.g. { "catchHearts": { "highScore": 150 }, "rpg": { "chapter": 2 } }
+  
+  // Unlocks
+  unlockedMedia  Unlock[]
+  
+  lastSyncedAt   DateTime @default(now())
+}
+
+model Unlock {
+  id        String   @id @default(uuid())
+  progressId String
+  progress   Progress @relation(fields: [progressId], references: [id])
+  
+  mediaId   String
+  media     Media    @relation(fields: [mediaId], references: [id])
+  
+  unlockedAt DateTime @default(now())
+}
+
+model Media {
+  id          String   @id @default(uuid())
+  title       String
+  type        MediaType // IMAGE, VIDEO, AUDIO, TEXT
+  url         String   // Cloudinary public ID or URL
+  requiredGame String  // The game ID required to unlock this
+  threshold   Json     // Logic: { "score": 100 } or { "completion": true }
+  
+  unlocks     Unlock[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @unique
+  expiresAt DateTime
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  AUDIO
+  TEXT
+}
