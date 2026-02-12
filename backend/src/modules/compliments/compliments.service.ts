@@ -44,6 +44,9 @@ export class ComplimentsService {
             });
 
             const content = response.choices[0].message.content;
+            if (!content) {
+                throw new Error('OpenAI returned empty content');
+            }
             const result = JSON.parse(content);
             return result.compliments || [];
         } catch (error) {

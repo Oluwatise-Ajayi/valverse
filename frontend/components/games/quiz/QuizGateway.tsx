@@ -2,16 +2,23 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { useGameStore } from '@/stores/useGameStore';
 
 const QUESTIONS = [
-  { q: "Where did we first meet?", a: ["School", "Park", "Online", "Cafe"], correct: 2 },
-  { q: "What is my favorite color?", a: ["Red", "Blue", "Green", "Pink"], correct: 3 },
-  { q: "What is our anniversary?", a: ["Feb 14", "Dec 25", "Jan 1", "Aug 15"], correct: 0 },
-  { q: "What food do I love most?", a: ["Pizza", "Sushi", "Tacos", "Burgers"], correct: 1 },
-  { q: "Which movie did we watch first?", a: ["Titanic", "Notebook", "Avengers", "Shrek"], correct: 3 },
+  { q: "Where did we first meet?", a: ["School", "Park", "Online", "my place"], correct: 3, hint: "Think about where you feel most at home." },
+  { q: "What is my favorite color?", a: ["Red", "Blue", "Green", "Pink"], correct: 0, hint: "It's the color of passion!" },
+  { q: "What is our anniversary?", a: ["Feb 14", "Sept 25", "Oct 2", "Aug 15"], correct: 2, hint: "It's in the fall." },
+  { q: "What food do I love most?", a: ["Amala and gbegs", "Ofada rice", "Fried Rice", "Burgers"], correct: 1, hint: "It's a local delicacy wrapped in leaves." },
+  { q: "Which is our song!", a: ["Man i Need", "Love me jeje", "Best Part", "Wait for you"], correct: 0, hint: "the dean of my school." },
+];
+
+const COLORS = [
+  "bg-pink-400 hover:bg-pink-500",
+  "bg-teal-400 hover:bg-teal-500",
+  "bg-indigo-400 hover:bg-indigo-500",
+  "bg-orange-400 hover:bg-orange-500",
 ];
 
 export default function QuizGateway() {
@@ -22,35 +29,32 @@ export default function QuizGateway() {
   const [score, setScore] = useState(0);
   const [skips, setSkips] = useState(4);
   const [failed, setFailed] = useState(false);
+  const [showHeartbreak, setShowHeartbreak] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const handleAnswer = async (index: number) => {
     const isCorrect = QUESTIONS[currentQ].correct === index;
+    
     if (isCorrect) {
-      const newScore = score + 1;
-      setScore(newScore);
-      // If at least 1 correct, we can technically pass, but let's finish the quiz
-    }
-
-    if (currentQ < QUESTIONS.length - 1) {
-      setCurrentQ(prev => prev + 1);
+      setScore(prev => prev + 1);
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 1000); 
     } else {
-      finishQuiz(score + (isCorrect ? 1 : 0));
+      setShowHeartbreak(true);
+      setTimeout(() => setShowHeartbreak(false), 1000);
     }
-  };
 
-  const handleSkip = () => {
-    if (skips > 0) {
-      setSkips(prev => prev - 1);
+    setTimeout(() => {
       if (currentQ < QUESTIONS.length - 1) {
         setCurrentQ(prev => prev + 1);
       } else {
-        finishQuiz(score);
+        finishQuiz(score + (isCorrect ? 1 : 0));
       }
-    }
+    }, 1000);
   };
 
   const finishQuiz = async (finalScore: number) => {
-    if (finalScore > 0) {
+    if (finalScore >= 3) {
       await updateQuiz(finalScore);
       router.push('/hub');
     } else {
@@ -58,56 +62,118 @@ export default function QuizGateway() {
     }
   };
 
+  const resetQuiz = () => {
+    setScore(0);
+    setCurrentQ(0);
+    setSkips(4);
+    setFailed(false);
+    setShowHeartbreak(false);
+    setShowCelebration(false);
+  };
+
   if (failed) {
     return (
-      <div className="flex flex-col items-center space-y-4 text-center">
-        <h2 className="text-2xl font-bold text-red-500">Oh no! 😢</h2>
-        <p>You need to get at least one right to enter the ValenVerse!</p>
-        <Button onClick={() => window.location.reload()}>Try Again</Button>
+      <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-6 text-center px-6">
+        <motion.div 
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="bg-white p-8 rounded-3xl shadow-2xl max-w-md w-full border-4 border-red-100"
+        >
+          <div className="text-6xl mb-4">😢</div>
+          <h2 className="text-3xl font-bold text-red-500 mb-2 font-outfit">Oh no!</h2>
+          <p className="text-gray-600 mb-6 font-outfit">You need at least 3 correct answers to enter the ValenVerse!</p>
+          <Button onClick={resetQuiz} className="w-full py-4 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold text-lg shadow-lg transition-transform hover:scale-105">
+            Try Again
+          </Button>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-lg p-6 bg-white/90 rounded-2xl shadow-xl text-center space-y-6">
-      <div className="flex justify-between text-sm text-gray-500">
-        <span>Question {currentQ + 1}/{QUESTIONS.length}</span>
-        <span>Skips left: {skips}</span>
+    <div className="relative flex flex-col items-center justify-center w-full max-w-2xl mx-auto px-4 min-h-[60vh] font-outfit">
+      
+      {/* Animations Overlay */}
+      <AnimatePresence>
+        {showHeartbreak && (
+          <motion.div 
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1.5, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            className="absolute z-50 text-8xl pointer-events-none"
+          >
+            💔
+          </motion.div>
+        )}
+        {showCelebration && (
+          <motion.div 
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1.5, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            className="absolute z-50 text-8xl pointer-events-none"
+          >
+            🎉
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Progress Header */}
+      <div className="flex flex-col items-center w-full mb-8 space-y-2">
+        <div className="bg-white/80 backdrop-blur-sm px-4 py-1 rounded-full shadow-sm text-pink-500 font-bold text-xs tracking-widest uppercase">
+          ❤️ Level {currentQ + 1} of {QUESTIONS.length}
+        </div>
+        <div className="w-24 h-1 bg-pink-100 rounded-full overflow-hidden">
+          <motion.div 
+            className="h-full bg-pink-500"
+            initial={{ width: 0 }}
+            animate={{ width: `${((currentQ + 1) / QUESTIONS.length) * 100}%` }}
+          />
+        </div>
       </div>
 
+      {/* Card Content */}
       <motion.div
         key={currentQ}
-        initial={{ x: 20, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        className="space-y-6"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: -20, opacity: 0 }}
+        className="bg-white rounded-[2rem] shadow-xl p-6 md:p-10 w-full relative overflow-hidden"
       >
-        <h2 className="text-2xl font-bold text-[var(--accent)]">
-          {QUESTIONS[currentQ].q}
-        </h2>
+        {/* Question */}
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-tight">
+            {QUESTIONS[currentQ].q.split(' ').map((word, i) => {
+               // Highlight key words logic (simple heuristic: longest word or specific indices)
+               const isHighlight = word.length > 5 || i === QUESTIONS[currentQ].q.split(' ').length - 1;
+               return isHighlight ? <span key={i} className="text-pink-500">{word} </span> : word + ' ';
+            })}
+          </h2>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Answers Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           {QUESTIONS[currentQ].a.map((ans, idx) => (
-            <Button 
+            <motion.button 
               key={idx} 
-              variant="outline" 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => handleAnswer(idx)}
-              className="w-full"
+              disabled={showHeartbreak || showCelebration}
+              className={`${COLORS[idx % COLORS.length]} text-white py-4 px-6 rounded-2xl font-bold text-lg shadow-md hover:shadow-lg transition-all border-b-4 border-black/10 active:border-b-0 active:translate-y-1 block w-full`}
             >
               {ans}
-            </Button>
+            </motion.button>
           ))}
         </div>
-      </motion.div>
 
-      <div className="mt-4">
-        <button 
-          onClick={handleSkip}
-          disabled={skips === 0}
-          className="text-gray-400 hover:text-gray-600 disabled:opacity-50 text-sm"
-        >
-          Skip Question ⏭️
-        </button>
-      </div>
+        {/* Hint */}
+        <div className="text-center">
+          <p className="text-gray-400 text-sm italic">
+            💡 Hint: {QUESTIONS[currentQ].hint}
+          </p>
+        </div>
+
+      </motion.div>
     </div>
   );
 }

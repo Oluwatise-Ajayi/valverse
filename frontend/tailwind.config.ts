@@ -12,6 +12,10 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        'great-vibes': ['var(--font-great-vibes)', 'cursive'],
+        'outfit': ['var(--font-outfit)', 'sans-serif'],
+      },
     },
   },
   plugins: [],
