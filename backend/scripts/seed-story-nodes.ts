@@ -258,11 +258,11 @@ My phone buzzed.
 
 "Happy Birthday 🎉"
 
-It was from her.
+It was from her. She got my number from Teni.
 
-She got my number from Teni.
-
-I smiled for longer than I should have.`,
+I smiled, but my mind was noisy.
+Friends like Timi and Ope had warned me:
+"Relax. You'll find your person. Don't misinterpret flags."`,
         options: [
             {
                 id: 'A',
@@ -282,7 +282,7 @@ I smiled for longer than I should have.`,
             },
             {
                 id: 'C',
-                label: 'Overthink before replying',
+                label: 'Overthink (Listen to friends)',
                 nextNode: 'C2_S2C',
                 effects: {
                     security: -1,
@@ -301,15 +301,16 @@ I smiled for longer than I should have.`,
 One message became ten.
 Ten became hours.
 
-Late nights.
-Voice notes.
-Laughing quietly in bed.
+I was vulnerable.
+I had recently gone through an emotional tug with someone close to me.
+I was lonely. Needy.
 
-It felt easy.`,
+Timi and Ope thought I was seeking validation.
+"She has a boyfriend, Tise. If anything happens, she'll choose him."`,
         options: [
             {
                 id: 'A',
-                label: 'Open up emotionally',
+                label: 'Ignore the doubt',
                 nextNode: 'C2_S3',
                 effects: {
                     trust: 2,
@@ -317,10 +318,10 @@ It felt easy.`,
             },
             {
                 id: 'B',
-                label: 'Keep it playful',
+                label: 'Worry about it',
                 nextNode: 'C2_S3',
                 effects: {
-                    desire: 1,
+                    security: -1,
                 },
             },
         ],
@@ -331,18 +332,17 @@ It felt easy.`,
         id: 'C2_S2B',
         chapter: 2,
         scene: 2,
-        text: `We chatted.
+        text: `I tried to keep it casual.
+"Don't mistake her kindness for a green light," I told myself.
 
-Mostly jokes.
-Small updates.
-Light conversations.
+But she was the sensitive, playful type.
+I was the teaser, the overthinker, the softie.
 
-It was nice…
-but safe.`,
+Our dynamic was undeniable.`,
         options: [
             {
                 id: 'A',
-                label: 'Deepen the convo',
+                label: 'Lean into the dynamic',
                 nextNode: 'C2_S3',
                 effects: {
                     closeness: 1,
@@ -350,7 +350,7 @@ but safe.`,
             },
             {
                 id: 'B',
-                label: 'Maintain distance',
+                label: 'Guard your heart',
                 nextNode: 'C2_S3',
                 effects: {
                     security: 1,
@@ -364,28 +364,26 @@ but safe.`,
         id: 'C2_S2C',
         chapter: 2,
         scene: 2,
-        text: `I typed.
-Deleted.
-Typed again.
+        text: `I typed. Deleted. Typed again.
 
-"What if I sound desperate?"
-"What if she ignores me?"
+Timi's voice in my head: "You're just lonely because of what happened with (my ex)."
 
-Minutes passed.
-
-Finally, I replied.`,
+But when I talked to Simi...
+I felt safe.
+Even when she didn't say much, just her presence made me know...
+I wanted her.`,
         options: [
             {
                 id: 'A',
-                label: 'Be honest',
+                label: 'Admit you want her',
                 nextNode: 'C2_S3',
                 effects: {
-                    trust: 1,
+                    desire: 2,
                 },
             },
             {
                 id: 'B',
-                label: 'Hide feelings',
+                label: 'Suppress it',
                 nextNode: 'C2_S3',
                 effects: {
                     security: -1,
@@ -399,17 +397,14 @@ Finally, I replied.`,
         id: 'C2_S3',
         chapter: 2,
         scene: 3,
-        text: `One night, she told me.
-
+        text: `She confirmed it eventually.
 "I have a boyfriend."
 
-My chest tightened.
+My friends were right.
+"See? She'll choose him," they'd say.
 
-But she kept talking to me.
-Laughing.
-Sharing.
-
-I was confused.`,
+But it felt like I was begging for attention.
+I was in emotional turmoil.`,
         options: [
             {
                 id: 'A',
@@ -421,18 +416,10 @@ I was confused.`,
             },
             {
                 id: 'B',
-                label: 'Stay emotionally close',
+                label: 'Stay close anyway',
                 nextNode: 'C2_S4B',
                 effects: {
                     closeness: 2,
-                },
-            },
-            {
-                id: 'C',
-                label: 'Pull back',
-                nextNode: 'C2_S4C',
-                effects: {
-                    security: 1,
                 },
             },
         ],
@@ -443,29 +430,18 @@ I was confused.`,
         id: 'C2_S4A',
         chapter: 2,
         scene: 4,
-        text: `I told myself:
-"Do the right thing."
+        text: `I tried to pull back.
+To stop "begging" for attention.
 
-I stayed respectful.
-Careful.
-Patient.
-
-She noticed.`,
+But I couldn't.
+I needed to tell her.`,
         options: [
             {
                 id: 'A',
-                label: 'Stay consistent',
+                label: 'Write it down',
                 nextNode: 'C2_S5',
                 effects: {
                     trust: 1,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Confess feelings anyway',
-                nextNode: 'C2_S5',
-                effects: {
-                    desire: 1,
                 },
             },
         ],
@@ -476,146 +452,72 @@ She noticed.`,
         id: 'C2_S4B',
         chapter: 2,
         scene: 4,
-        text: `We got closer.
+        text: `I kept talking to her.
+Falling for her.
+Intently.
 
-Deeper talks.
-Personal stories.
-
-Sometimes, it felt like…
-more than friendship.`,
+It was becoming too much to hold inside.`,
         options: [
             {
                 id: 'A',
-                label: 'Express feelings',
+                label: 'Write it down',
                 nextNode: 'C2_S5',
-                effects: {
-                    desire: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Hide them',
-                nextNode: 'C2_S5',
-                effects: {
-                    security: -1,
-                },
-            },
-        ],
-    },
-
-    // Scene 4C — Stepping Back
-    {
-        id: 'C2_S4C',
-        chapter: 2,
-        scene: 4,
-        text: `I reduced replies.
-Short messages.
-Less calls.
-
-It hurt.
-
-But it felt safer.`,
-        options: [
-            {
-                id: 'A',
-                label: 'Reconnect later',
-                nextNode: 'C2_S5',
-                effects: {
-                    closeness: 1,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Stay distant',
-                nextNode: 'C2_S5',
-                effects: {
-                    closeness: -1,
-                },
-            },
-        ],
-    },
-
-    // Scene 5 — The Letter
-    {
-        id: 'C2_S5',
-        chapter: 2,
-        scene: 5,
-        text: `One day, everything poured out.
-
-I wrote her a long message.
-Page after page.
-
-About my fears.
-My confusion.
-My feelings.
-
-I was breaking down.`,
-        options: [
-            {
-                id: 'A',
-                label: 'Send it',
-                nextNode: 'C2_S6',
-                effects: {
-                    trust: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Rewrite and soften',
-                nextNode: 'C2_S6',
-                effects: {
-                    trust: 1,
-                },
-            },
-            {
-                id: 'C',
-                label: 'Delete it',
-                nextNode: 'C2_S6',
-                effects: {
-                    security: -2,
-                },
-            },
-        ],
-    },
-
-    // Scene 6 — Her Response
-    {
-        id: 'C2_S6',
-        chapter: 2,
-        scene: 6,
-        text: `She read it.
-
-Took some time.
-
-Then replied:
-
-"You don't have to worry.
-I'm here for you."
-
-I felt… safe.`,
-        options: [
-            {
-                id: 'A',
-                label: 'Thank her deeply',
-                nextNode: 'C2_END',
-                effects: {
-                    closeness: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Joke it off',
-                nextNode: 'C2_END',
                 effects: {
                     desire: 1,
                 },
             },
+        ],
+    },
+
+    // Scene 5 — The Epistle
+    {
+        id: 'C2_S5',
+        chapter: 2,
+        scene: 5,
+        text: `I approached her about it.
+I wrote a whole epistle.
+
+Literally breaking down.
+My fears. My turmoil with Dayo. My feelings for her.
+Every vulnerability I had.
+
+I sent it.`,
+        options: [
             {
-                id: 'C',
-                label: 'Stay quiet',
+                id: 'A',
+                label: 'Wait for reply',
+                nextNode: 'C2_S6A',
+                effects: {
+                    trust: 3,
+                    closeness: 2,
+                },
+            },
+        ],
+    },
+
+    // Scene 6A — The Response
+    {
+        id: 'C2_S6A',
+        chapter: 2,
+        scene: 6,
+        text: `She didn't know what to say at first.
+
+But then...
+She promised I didn't have to worry.
+
+"You're not alone," she said.
+"I'm here."
+
+That made me feel at home.
+That no matter how big my emotional turmoil got, I'd still have someone.`,
+        options: [
+            {
+                id: 'A',
+                label: 'Feel safe',
                 nextNode: 'C2_END',
                 effects: {
-                    security: -1,
+                    security: 3,
+                    closeness: 3,
                 },
             },
         ],
@@ -629,12 +531,17 @@ I felt… safe.`,
         text: `That night, I realized…
 
 She wasn't just someone I liked.
+She was my emotional home.
 
-She was becoming
-my emotional home.
-
-And that scared me.`,
-        options: [],
+Even if she was still dating her babe.`,
+        options: [
+            {
+                id: 'A',
+                label: 'Continue to Chapter 3',
+                nextNode: 'C3_S1',
+                effects: {},
+            },
+        ],
     },
 ];
 
@@ -646,17 +553,14 @@ const chapter3Nodes: StoryNode[] = [
         chapter: 3,
         scene: 1,
         text: `September 25.
-
 Teni's birthday.
-
 Ikeja City Mall.
 
-Music. Food. Laughter.
+As much as we were celebrating Teni...
+We had our own share of fun.
 
-We were celebrating her…
-
-But somehow,
-it felt like our day too.`,
+Music. Laughter.
+And a bit of alcohol.`,
         options: [
             {
                 id: 'A',
@@ -668,166 +572,34 @@ it felt like our day too.`,
             },
             {
                 id: 'B',
-                label: 'Hang with friends',
-                nextNode: 'C3_S2B',
+                label: 'Enjoy the vibe',
+                nextNode: 'C3_S2A',
                 effects: {
-                    security: 1,
-                },
-            },
-            {
-                id: 'C',
-                label: 'Watch her quietly',
-                nextNode: 'C3_S2C',
-                effects: {
-                    desire: 1,
+                    closeness: 1,
                 },
             },
         ],
     },
 
-    // Scene 2A — Shared Moments
+    // Scene 2A — The First Kiss
     {
         id: 'C3_S2A',
         chapter: 3,
         scene: 2,
-        text: `We walked side by side.
+        text: `Under the influence...
+High on the moment...
 
-Shared snacks.
-Shared jokes.
+We found a moment.
+And we had our first kiss.
 
-Sometimes,
-our hands brushed.
-
-I didn't pull away.`,
+It wasn't planned. But it happened.`,
         options: [
             {
                 id: 'A',
-                label: 'Hold her hand',
-                nextNode: 'C3_S3',
-                effects: {
-                    desire: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Smile and tease',
-                nextNode: 'C3_S3',
-                effects: {
-                    closeness: 1,
-                },
-            },
-        ],
-    },
-
-    // Scene 2B — Group Energy
-    {
-        id: 'C3_S2B',
-        chapter: 3,
-        scene: 2,
-        text: `I stayed with the group.
-
-Laughing.
-Playing.
-
-Still,
-I kept glancing at her.`,
-        options: [
-            {
-                id: 'A',
-                label: 'Rejoin her later',
-                nextNode: 'C3_S3',
-                effects: {
-                    closeness: 1,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Keep distance',
-                nextNode: 'C3_S3',
-                effects: {
-                    security: 1,
-                },
-            },
-        ],
-    },
-
-    // Scene 2C — Quiet Watching
-    {
-        id: 'C3_S2C',
-        chapter: 3,
-        scene: 2,
-        text: `I watched her from afar.
-
-The way she laughed.
-The way she moved.
-
-My heart was loud.
-
-My mouth was silent.`,
-        options: [
-            {
-                id: 'A',
-                label: 'Approach her',
-                nextNode: 'C3_S3',
-                effects: {
-                    desire: 1,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Stay back',
-                nextNode: 'C3_S3',
-                effects: {
-                    security: 1,
-                },
-            },
-        ],
-    },
-
-    // Scene 3 — First Kiss
-    {
-        id: 'C3_S3',
-        chapter: 3,
-        scene: 3,
-        text: `Later that day…
-
-The drinks were light.
-The mood was soft.
-
-We stood close.
-
-Our eyes met.
-
-Then…
-
-We kissed.
-
-It was quiet.
-Real.
-Unplanned.`,
-        options: [
-            {
-                id: 'A',
-                label: 'Pull her closer',
+                label: 'Hold the memory',
                 nextNode: 'C3_S4',
                 effects: {
-                    desire: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Step back gently',
-                nextNode: 'C3_S4',
-                effects: {
-                    trust: 1,
-                },
-            },
-            {
-                id: 'C',
-                label: 'Apologize',
-                nextNode: 'C3_S4',
-                effects: {
-                    security: 1,
+                    desire: 3,
                 },
             },
         ],
@@ -838,30 +610,22 @@ Unplanned.`,
         id: 'C3_S4',
         chapter: 3,
         scene: 4,
-        text: `After that day,
-my friends spoke up.
+        text: `After that, the confusion hit.
+She was still dating her babe.
 
+I turned to my friends again.
 Kcee. May. Akachi.
 Layo. Anthony.
 
-"Be clear with her."
-"Don't be second option."
-"Protect your heart."`,
+They offered their advice.
+I had to make a move. I couldn't stay in limbo.`,
         options: [
             {
                 id: 'A',
-                label: 'Take their advice',
+                label: 'Decide to ask her out',
                 nextNode: 'C3_S5',
                 effects: {
-                    trust: 1,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Ignore it',
-                nextNode: 'C3_S5',
-                effects: {
-                    desire: 1,
+                    confidence: 2,
                 },
             },
         ],
@@ -874,81 +638,74 @@ Layo. Anthony.
         scene: 5,
         text: `October 2.
 
-My chest was tight.
+She was at camp.
+Not physically present.
+We couldn't kiss or touch.
 
-I told her:
+But via emails and cute messages...
+I told her to choose.
 
-"I can't do this halfway.
-Please choose.
-Me…
-or him."`,
+"It's either me... or your uninvolved babe."`,
         options: [
             {
                 id: 'A',
-                label: 'Speak calmly',
-                nextNode: 'C3_S6',
+                label: 'Wait for her choice',
+                nextNode: 'C3_S6A',
                 effects: {
                     trust: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Speak emotionally',
-                nextNode: 'C3_S6',
-                effects: {
-                    closeness: 1,
-                },
-            },
-            {
-                id: 'C',
-                label: 'Almost back out',
-                nextNode: 'C3_S6',
-                effects: {
-                    security: -1,
+                    security: 2,
                 },
             },
         ],
     },
 
-    // Scene 6 — Her Choice
+    // Scene 6A — She Chooses
     {
-        id: 'C3_S6',
+        id: 'C3_S6A',
         chapter: 3,
         scene: 6,
-        text: `She went quiet.
+        text: `She chose me.
 
-Thought deeply.
+Even from a distance.
+Through the screen.
 
-Then said:
+"I choose you," she said.
 
-"I choose you."
-
-My heart stopped.
-
-Then restarted.`,
+We were officially "Us".`,
         options: [
             {
                 id: 'A',
-                label: 'Hug her',
-                nextNode: 'C3_END',
+                label: 'Celebrate (virtually)',
+                nextNode: 'C3_S7',
                 effects: {
                     closeness: 2,
                 },
             },
+        ],
+    },
+
+    // Scene 7 — Unilag Visit
+    {
+        id: 'C3_S7',
+        chapter: 3,
+        scene: 7,
+        text: `We didn't actually meet after asking her out till a week later.
+
+I invited her to Unilag.
+
+Finally physically together.
+We had a bit of... promiscuous fun.
+
+The teaser and the sensitive one.
+Finally in sync.`,
+        options: [
             {
-                id: 'B',
-                label: 'Thank her',
+                id: 'A',
+                label: 'Enjoy the moment',
                 nextNode: 'C3_END',
                 effects: {
-                    trust: 1,
-                },
-            },
-            {
-                id: 'C',
-                label: 'Promise effort',
-                nextNode: 'C3_END',
-                effects: {
-                    security: 1,
+                    desire: 3,
+                    closeness: 3,
                 },
             },
         ],
@@ -959,317 +716,142 @@ Then restarted.`,
         id: 'C3_END',
         chapter: 3,
         scene: 999,
-        text: `That day,
-we became "us".
+        text: `We were high on new love.
 
-No more almost.
+But life has a way of testing things.
 
-No more maybe.`,
-        options: [],
+November was coming.`,
+        options: [
+            {
+                id: 'A',
+                label: 'Continue to Chapter 4',
+                nextNode: 'C4_S1',
+                effects: {},
+            },
+        ],
     },
 ];
 
 // Chapter 4: "The Crack"
 const chapter4Nodes: StoryNode[] = [
-    // Scene 1 — Old Feelings
+    // Scene 1 — Late November
     {
         id: 'C4_S1',
         chapter: 4,
         scene: 1,
-        text: `November came fast.
+        text: `Late November.
 
-Life got heavy.
-School. Stress. Pressure.
+I was dealing with a lot.
+Emotional dealings with (my ex).
 
-Then…
-Dayo texted.
-
-Old memories woke up.`,
+It was heavy.
+And I was weak.`,
         options: [
             {
                 id: 'A',
-                label: 'Ignore it',
-                nextNode: 'C4_S2A',
-                effects: {
-                    trust: 1,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Reply casually',
-                nextNode: 'C4_S2B',
+                label: 'Feel the weight',
+                nextNode: 'C4_S2',
                 effects: {
                     security: -1,
                 },
             },
-            {
-                id: 'C',
-                label: 'Get emotional',
-                nextNode: 'C4_S2C',
-                effects: {
-                    closeness: -1,
-                },
-            },
         ],
     },
 
-    // Scene 2A — Strong Boundaries
+    // Scene 2 — The Mistake
     {
-        id: 'C4_S2A',
+        id: 'C4_S2',
         chapter: 4,
         scene: 2,
-        text: `I didn't reply.
+        text: `In the heat of the moment...
+I cheated.
+With (my ex).
 
-I focused on her.
-
-On us.
-
-It wasn't easy.
-But it was right.`,
+It wasn't planned. It just happened.
+A mess of old emotions and new mistakes.`,
         options: [
             {
                 id: 'A',
-                label: 'Tell my babe',
-                nextNode: 'C4_S3',
-                effects: {
-                    trust: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Keep it private',
-                nextNode: 'C4_S3',
-                effects: {
-                    security: 1,
-                },
-            },
-        ],
-    },
-
-    // Scene 2B — Slipping Back
-    {
-        id: 'C4_S2B',
-        chapter: 4,
-        scene: 2,
-        text: `One reply became many.
-
-Old jokes.
-Old comfort.
-
-I knew I was playing with fire.`,
-        options: [
-            {
-                id: 'A',
-                label: 'Cut it off',
-                nextNode: 'C4_S3',
-                effects: {
-                    trust: 1,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Continue secretly',
+                label: 'Accept what happened',
                 nextNode: 'C4_S3',
                 effects: {
                     trust: -2,
-                },
-            },
-        ],
-    },
-
-    // Scene 2C — Emotional Mess
-    {
-        id: 'C4_S2C',
-        chapter: 4,
-        scene: 2,
-        text: `Talking to Dayo felt familiar.
-
-Too familiar.
-
-I was confused.
-
-Lonely.
-
-Weak.`,
-        options: [
-            {
-                id: 'A',
-                label: 'Confess confusion',
-                nextNode: 'C4_S3',
-                effects: {
-                    trust: 1,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Hide it',
-                nextNode: 'C4_S3',
-                effects: {
                     security: -2,
                 },
             },
         ],
     },
 
-    // Scene 3 — The Mistake
+    // Scene 3 — The Aftermath
     {
         id: 'C4_S3',
         chapter: 4,
         scene: 3,
-        text: `One night,
-everything crossed the line.
+        text: `We decided not to talk to each other again.
+Me and (my ex).
+It was best if we went our separate ways.
 
-Emotions.
-Proximity.
-Poor decisions.
-
-I cheated.`,
+But the damage to "Us" was done.
+My babe took it hard.`,
         options: [
             {
                 id: 'A',
-                label: 'Confess immediately',
-                nextNode: 'C4_S4',
-                effects: {
-                    trust: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Delay confession',
+                label: 'Wait for her decision',
                 nextNode: 'C4_S4',
                 effects: {
                     trust: -1,
                 },
             },
-            {
-                id: 'C',
-                label: 'Hide it',
-                nextNode: 'C4_S4',
-                effects: {
-                    trust: -3,
-                },
-            },
         ],
     },
 
-    // Scene 4 — The Truth
+    // Scene 4 — Forgiveness
     {
         id: 'C4_S4',
         chapter: 4,
         scene: 4,
-        text: `She found out.
+        text: `She was hurt. Shattered.
 
-Or I told her.
+But... she stuck with me.
+She forgave me.
 
-Either way…
-
-She was broken.`,
+Despite my flaws.
+Despite the teaser/overthinker making a mess of things.
+The sensitive/playful girl chose to stay.`,
         options: [
             {
                 id: 'A',
-                label: 'Take full responsibility',
+                label: 'Promise to be better',
                 nextNode: 'C4_S5',
                 effects: {
-                    security: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Make excuses',
-                nextNode: 'C4_S5',
-                effects: {
-                    trust: -2,
-                },
-            },
-            {
-                id: 'C',
-                label: 'Beg',
-                nextNode: 'C4_S5',
-                effects: {
-                    closeness: 1,
+                    trust: 2,
+                    closeness: 2,
                 },
             },
         ],
     },
 
-    // Scene 5 — Forgiveness
+    // Scene 5 — Rebuilding (Cooking/Visiting)
     {
         id: 'C4_S5',
         chapter: 4,
         scene: 5,
-        text: `Days passed.
+        text: `Since then, we've been rebuilding.
 
-Tears.
-Silence.
-Long talks.
+Occasional outings.
+Her cooking at my place.
+Me visiting her place.
 
-Then she said:
-
-"I'll try to forgive you."`,
+Our dynamic returned.
+Me teasing, her playing.
+Stubborn love.`,
         options: [
             {
                 id: 'A',
-                label: 'Promise change',
-                nextNode: 'C4_S6',
-                effects: {
-                    trust: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Show effort',
-                nextNode: 'C4_S6',
-                effects: {
-                    security: 2,
-                },
-            },
-            {
-                id: 'C',
-                label: 'Stay quiet',
-                nextNode: 'C4_S6',
-                effects: {
-                    security: -1,
-                },
-            },
-        ],
-    },
-
-    // Scene 6 — Repair
-    {
-        id: 'C4_S6',
-        chapter: 4,
-        scene: 6,
-        text: `We rebuilt slowly.
-
-More honesty.
-More patience.
-
-Less pride.
-
-More "us".`,
-        options: [
-            {
-                id: 'A',
-                label: 'Be consistent',
+                label: 'Cherish it',
                 nextNode: 'C4_END',
                 effects: {
-                    closeness: 2,
-                },
-            },
-            {
-                id: 'B',
-                label: 'Seek counseling/help',
-                nextNode: 'C4_END',
-                effects: {
-                    trust: 1,
-                },
-            },
-            {
-                id: 'C',
-                label: 'Avoid topic',
-                nextNode: 'C4_END',
-                effects: {
-                    security: -1,
+                    closeness: 3,
                 },
             },
         ],
@@ -1280,12 +862,18 @@ More "us".`,
         id: 'C4_END',
         chapter: 4,
         scene: 999,
-        text: `Love didn't end there.
+        text: `Love isn't perfect.
+It's stubborn.
 
-It was wounded.
-
-But still breathing.`,
-        options: [],
+And we are still here.`,
+        options: [
+            {
+                id: 'A',
+                label: 'Continue to Chapter 5',
+                nextNode: 'C5_S1',
+                effects: {},
+            },
+        ],
     },
 ];
 
@@ -1759,21 +1347,6 @@ async function main() {
     ];
 
     // Validate all nodes before seeding
-    console.log('🔍 Validating Chapter 1...');
-    validateStoryNodes(chapter1Nodes);
-
-    console.log('\n🔍 Validating Chapter 2...');
-    validateStoryNodes(chapter2Nodes);
-
-    console.log('\n🔍 Validating Chapter 3...');
-    validateStoryNodes(chapter3Nodes);
-
-    console.log('\n🔍 Validating Chapter 4...');
-    validateStoryNodes(chapter4Nodes);
-
-    console.log('\n🔍 Validating Chapter 5...');
-    validateStoryNodes(chapter5Nodes);
-
     console.log('\n🔍 Validating all chapters together...');
     validateStoryNodes(allNodes);
 
@@ -1805,6 +1378,7 @@ async function main() {
             // @ts-ignore
             await prisma.storyChoice.create({
                 data: {
+                    id: `${node.id}_${option.id}`, // Deterministic ID to prevent stale frontend references
                     nodeId: node.id,
                     optionId: option.id,
                     label: option.label,
@@ -1854,7 +1428,6 @@ async function main() {
 
     console.log('\n🎉 Seeding complete! Chapters 1-5 ready.');
     console.log(`📊 Total: ${allNodes.length} nodes`);
-    console.log('💚 Endings: 5 unique outcomes based on player choices');
     console.log('💚 Endings: 5 unique outcomes based on player choices');
 }
 

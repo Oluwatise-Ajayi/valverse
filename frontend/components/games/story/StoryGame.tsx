@@ -78,12 +78,20 @@ export default function StoryGame() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-red-400">
                 <p>{error}</p>
-                <button 
-                    onClick={() => window.location.reload()}
-                    className="mt-4 px-4 py-2 bg-red-900/50 rounded-lg hover:bg-red-800 transition"
-                >
-                    Retry
-                </button>
+                <div className="flex gap-4 mt-4">
+                    <button 
+                        onClick={() => window.location.reload()}
+                        className="px-4 py-2 bg-red-900/50 rounded-lg hover:bg-red-800 transition"
+                    >
+                        Retry
+                    </button>
+                    <button 
+                        onClick={handleReset}
+                        className="px-4 py-2 bg-pink-600/50 rounded-lg hover:bg-pink-500 transition text-white"
+                    >
+                        Reset Game
+                    </button>
+                </div>
             </div>
         );
     }
@@ -108,6 +116,14 @@ export default function StoryGame() {
                     <StatItem icon={Shield} label="Trust" value={state.trust} color="text-blue-400" />
                     <StatItem icon={Lock} label="Security" value={state.security} color="text-emerald-400" />
                     <StatItem icon={Sparkles} label="Desire" value={state.desire} color="text-purple-400" />
+                    
+                    <button 
+                        onClick={handleReset}
+                        className="flex items-center gap-1.5 bg-red-900/30 hover:bg-red-900/50 px-3 py-1.5 rounded-full border border-red-500/30 transition-colors"
+                        title="Restart Story"
+                    >
+                        <RefreshCw size={12} className="text-red-400" />
+                    </button>
                 </div>
             </div>
 
