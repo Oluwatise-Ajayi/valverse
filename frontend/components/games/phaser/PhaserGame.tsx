@@ -47,6 +47,7 @@ export default function PhaserGame() {
             blendMode: 'ADD'
         });
 
+        /* 
         const emitter = particles.createEmitter({
             x: { min: 0, max: 800 },
             y: 0,
@@ -55,6 +56,7 @@ export default function PhaserGame() {
             quantity: 2,
             frequency: 1000,
         });
+        */
         
         // Interactive "Heart" logic simulated by falling objects would need actual sprites
         // simulating simple text score update
