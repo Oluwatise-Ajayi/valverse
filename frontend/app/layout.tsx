@@ -17,9 +17,7 @@ export const metadata: Metadata = {
   title: "ValenVerse",
   description: "A romantic interactive journey",
   manifest: "/manifest.json",
-  icons: {
-    apple: "/icons/icon-192x192.png",
-  },
+
 };
 
 export const viewport = {
