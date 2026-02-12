@@ -30,4 +30,12 @@ export class MediaService {
         // return cloudinary.url(media.url, { secure: true, sign_url: true, type: 'authenticated' });
         return { url: `https://res.cloudinary.com/demo/image/upload/${media.url}`, title: media.title };
     }
+
+    async getMediaByGame(gameId: string) {
+        return this.prisma.media.findMany({
+            where: {
+                requiredGame: gameId
+            }
+        });
+    }
 }

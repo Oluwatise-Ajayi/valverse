@@ -16,4 +16,9 @@ export class MediaController {
     getSignedUrl(@Request() req, @Param('id') id: string) {
         return this.mediaService.getSignedUrl(req.user.id, id);
     }
+
+    @Get('game/:gameId')
+    getMediaByGame(@Param('gameId') gameId: string) {
+        return this.mediaService.getMediaByGame(gameId);
+    }
 }

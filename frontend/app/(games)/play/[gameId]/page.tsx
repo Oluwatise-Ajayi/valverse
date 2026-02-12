@@ -17,7 +17,8 @@ const PhaserGame = dynamic(() => import('@/components/games/phaser/PhaserGame').
 });
 
 const ScratchCard = dynamic(() => import('@/components/games/scratch/ScratchCard').then(mod => mod.default || (() => <div>Game Not Found</div>)), {
-  ssr: false
+  ssr: false,
+  loading: () => <div className="text-center p-10 font-bold text-[var(--accent)]">Loading Scratch Card...</div>
 });
 
 const LoveStoryRPG = dynamic(() => import('@/components/games/rpg/LoveStoryRPG').then(mod => mod.default || (() => <div>Game Not Found</div>)), {
