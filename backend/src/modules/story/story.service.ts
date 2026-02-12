@@ -1,7 +1,7 @@
 
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { StoryNode, StoryChoice, PlayerStoryState } from '../../generated/client';
+import { StoryNode, StoryChoice, PlayerStoryState } from '@prisma-local/client';
 
 @Injectable()
 export class StoryService {
