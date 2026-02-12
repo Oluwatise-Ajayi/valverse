@@ -63,7 +63,8 @@ model Unlock {
 model Media {
   id          String   @id @default(uuid())
   title       String
-  type        MediaType // IMAGE, VIDEO, AUDIO, TEXT
+  description String?  // Added for compliments and other  metadata
+  type        MediaType // IMAGE, VIDEO, AUDIO, TEXT, COMPLIMENT
   url         String   // Cloudinary public ID or URL
   requiredGame String  // The game ID required to unlock this
   threshold   Json     // Logic: { "score": 100 } or { "completion": true }
@@ -84,4 +85,6 @@ enum MediaType {
   VIDEO
   AUDIO
   TEXT
+  COMPLIMENT
 }
+

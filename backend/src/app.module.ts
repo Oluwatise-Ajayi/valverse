@@ -7,6 +7,8 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ProgressModule } from './modules/progress/progress.module';
 import { ComplimentsModule } from './modules/compliments/compliments.module';
+import { AdminModule } from './modules/admin/admin.module';
+import { MediaModule } from './modules/media/media.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { ComplimentsModule } from './modules/compliments/compliments.module';
     AuthModule,
     ProgressModule,
     ComplimentsModule,
+    AdminModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
