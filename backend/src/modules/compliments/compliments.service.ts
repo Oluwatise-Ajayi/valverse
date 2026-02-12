@@ -1,57 +1,69 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 @Injectable()
 export class ComplimentsService {
-    private openai: OpenAI;
+    private genAI: GoogleGenerativeAI;
     private readonly logger = new Logger(ComplimentsService.name);
 
     constructor(private configService: ConfigService) {
-        const apiKey = this.configService.get<string>('OPENAI_API_KEY');
+        const apiKey = this.configService.get<string>('GEMINI_API_KEY');
         if (apiKey) {
-            this.openai = new OpenAI({ apiKey });
+            this.genAI = new GoogleGenerativeAI(apiKey);
         } else {
-            this.logger.warn('OPENAI_API_KEY is not set. Compliment generation will not work.');
+            this.logger.warn('GEMINI_API_KEY is not set. Compliment generation will be limited.');
         }
     }
 
-    async generate(interest: string): Promise<string[]> {
-        if (!this.openai) {
-            return [
-                'You are glowing today! (API Key Missing)',
-                'Your smile lights up the room! (API Key Missing)',
-                'You are incredibly smart! (API Key Missing)',
-                'You have the best taste! (API Key Missing)',
-                'You are simply the best! (API Key Missing)',
-            ];
+    async generate(interest: string, count: number = 20): Promise<string[]> {
+        this.logger.log(`Attempting to generate ${count} compliments for interest: "${interest}"`);
+
+        if (!this.genAI) {
+            this.logger.warn('Gemini client not initialized (API Key missing). Returning existing fallbacks.');
+            return Array(count).fill('You are amazing! (API Key Missing)');
         }
 
         try {
-            const response = await this.openai.chat.completions.create({
-                model: 'gpt-4o-mini',
-                messages: [
-                    {
-                        role: 'system',
-                        content: 'You are a helpful assistant that generates compliments. Output structured JSON.',
-                    },
-                    {
-                        role: 'user',
-                        content: `Generate a Gen-Z style, sweet, and lowkey poetic compliments for my girlfriend who loves ${interest}. Return a JSON object with a key "compliments" containing the compliment.`,
-                    },
-                ],
-                response_format: { type: 'json_object' },
-            });
+            const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
-            const content = response.choices[0].message.content;
-            if (!content) {
-                throw new Error('OpenAI returned empty content');
+            const prompt = `
+            Generate ${count} unique, Gen-Z style, sweet, and lowkey poetic compliments for my girlfriend who loves "${interest}".
+            
+            Return ONLY a valid JSON object with a single key "compliments" which is an array of strings.
+            Do not include markdown code blocks.
+            Example: { "compliments": ["You're the main character in my life", "Your vibe checks out perfectly"] }
+            `;
+
+            this.logger.log('Sending prompt to Gemini...');
+            const result = await model.generateContent(prompt);
+            const responseText = result.response.text();
+
+            this.logger.log('Received response from Gemini.');
+            this.logger.debug(`Raw response: ${responseText}`);
+
+            // Clean up potentially markdown-wrapped JSON
+            const jsonString = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+
+            const parsed = JSON.parse(jsonString);
+
+            if (parsed.compliments && Array.isArray(parsed.compliments)) {
+                this.logger.log(`Successfully parsed ${parsed.compliments.length} compliments.`);
+                return parsed.compliments;
+            } else {
+                this.logger.warn('Parsed JSON did not contain "compliments" array', parsed);
+                throw new Error('Invalid response structure');
             }
-            const result = JSON.parse(content);
-            return result.compliments || [];
         } catch (error) {
-            this.logger.error('Failed to generate compliments', error);
-            throw error;
+            this.logger.error('Failed to generate compliments with Gemini', error);
+            // Fallback compliments
+            return [
+                `Your smile outshines any ${interest}`,
+                `You make ${interest} look even cooler`,
+                "You're the main character energy I need",
+                "No cap, you're perfect",
+                "Living rent-free in my mind 24/7"
+            ];
         }
     }
 }

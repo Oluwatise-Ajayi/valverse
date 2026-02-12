@@ -8,6 +8,6 @@ export class ComplimentsController {
 
     @Post('generate')
     async generate(@Body() dto: GenerateComplimentsDto) {
-        return this.complimentsService.generate(dto.interest);
+        return this.complimentsService.generate(dto.interest, dto.count);
     }
 }
