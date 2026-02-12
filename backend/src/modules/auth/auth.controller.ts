@@ -12,6 +12,11 @@ export class AuthController {
         return this.authService.register(createUserDto);
     }
 
+    @Post('secret')
+    async loginSecret(@Body('secret') secret: string) {
+        return this.authService.loginWithSecret(secret);
+    }
+
     @UseGuards(AuthGuard('local'))
     @Post('login')
     async login(@Request() req) {

@@ -234,7 +234,14 @@ Something started that day.
 I didn't know it yet.
 
 But my life was changing.`,
-        options: [],
+        options: [
+            {
+                id: 'A',
+                label: 'Continue to Chapter 2',
+                nextNode: 'C2_S1',
+                effects: {},
+            },
+        ],
     },
 ];
 

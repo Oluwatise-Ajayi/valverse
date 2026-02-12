@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { useGameStore } from '@/stores/useGameStore';
+import { useAuthStore } from '@/stores/useAuthStore';
+import api from '@/lib/api';
 
 const QUESTIONS = [
   { q: "Where did we first meet?", a: ["School", "Park", "Online", "my place"], correct: 3, hint: "Think about where you feel most at home." },
@@ -24,13 +26,34 @@ const COLORS = [
 export default function QuizGateway() {
   const router = useRouter();
   const { updateQuiz } = useGameStore();
+  const { login } = useAuthStore();
   
-  const [currentQ, setCurrentQ] = useState(0);
+  const [currentQ, setCurrentQ] = useState(-1); // Start with secret question
   const [score, setScore] = useState(0);
   const [skips, setSkips] = useState(4);
   const [failed, setFailed] = useState(false);
   const [showHeartbreak, setShowHeartbreak] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSecretLogin = async (secret: string) => {
+    if (!secret || loading) return;
+    
+    try {
+        setLoading(true);
+        const { data } = await api.post('/auth/secret', { secret });
+        login(data.accessToken, data.user);
+        
+        // Show success animation or just move to quiz
+        setCurrentQ(0); 
+    } catch (err) {
+        console.error('Login failed', err);
+        // Maybe show error? For now, just let them try again or it acts as a "wrong password" shake
+        // But since we allow guests, it should theoretically always succeed unless server error.
+    } finally {
+        setLoading(false);
+    }
+  };
 
   const handleAnswer = async (index: number) => {
     const isCorrect = QUESTIONS[currentQ].correct === index;
@@ -132,6 +155,7 @@ export default function QuizGateway() {
       </div>
 
       {/* Card Content */}
+      {/* Card Content */}
       <motion.div
         key={currentQ}
         initial={{ y: 20, opacity: 0 }}
@@ -142,15 +166,39 @@ export default function QuizGateway() {
         {/* Question */}
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-tight">
-            {QUESTIONS[currentQ].q.split(' ').map((word, i) => {
-               // Highlight key words logic (simple heuristic: longest word or specific indices)
-               const isHighlight = word.length > 5 || i === QUESTIONS[currentQ].q.split(' ').length - 1;
-               return isHighlight ? <span key={i} className="text-pink-500">{word} </span> : word + ' ';
-            })}
+             {currentQ === -1 ? (
+                <span>What is my nickname for you?</span>
+             ) : (
+                QUESTIONS[currentQ].q.split(' ').map((word, i) => {
+                   const isHighlight = word.length > 5 || i === QUESTIONS[currentQ].q.split(' ').length - 1;
+                   return isHighlight ? <span key={i} className="text-pink-500">{word} </span> : word + ' ';
+                })
+             )}
           </h2>
         </div>
 
-        {/* Answers Grid */}
+        {/* Answer Input or Grid */}
+        {currentQ === -1 ? (
+            <div className="flex flex-col gap-4">
+                <input 
+                    type="text" 
+                    placeholder="Type your answer..." 
+                    className="w-full p-4 text-center text-xl border-2 border-pink-200 rounded-xl focus:border-pink-500 outline-none transition-colors"
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            const val = (e.target as HTMLInputElement).value;
+                            if(val) handleSecretLogin(val);
+                        }
+                    }}
+                />
+                <Button onClick={() => {
+                     const input = document.querySelector('input') as HTMLInputElement;
+                     if(input?.value) handleSecretLogin(input.value);
+                }} className="w-full py-4 text-lg bg-pink-500 hover:bg-pink-600 text-white rounded-xl">
+                    Enter My World 💖
+                </Button>
+            </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           {QUESTIONS[currentQ].a.map((ans, idx) => (
             <motion.button 
@@ -165,13 +213,16 @@ export default function QuizGateway() {
             </motion.button>
           ))}
         </div>
+        )}
 
         {/* Hint */}
-        <div className="text-center">
-          <p className="text-gray-400 text-sm italic">
-            💡 Hint: {QUESTIONS[currentQ].hint}
-          </p>
-        </div>
+        {currentQ !== -1 && (
+            <div className="text-center">
+            <p className="text-gray-400 text-sm italic">
+                💡 Hint: {QUESTIONS[currentQ].hint}
+            </p>
+            </div>
+        )}
 
       </motion.div>
     </div>
