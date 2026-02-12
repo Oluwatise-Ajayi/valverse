@@ -9,6 +9,7 @@ import { ProgressModule } from './modules/progress/progress.module';
 import { ComplimentsModule } from './modules/compliments/compliments.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { MediaModule } from './modules/media/media.module';
+import { StoryModule } from './modules/story/story.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { MediaModule } from './modules/media/media.module';
     ComplimentsModule,
     AdminModule,
     MediaModule,
+    StoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

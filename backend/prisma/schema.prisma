@@ -20,6 +20,7 @@ model User {
   profile   Profile?
   progress  Progress?
   sessions  Session[]
+  storyState PlayerStoryState?
 }
 
 model Profile {
@@ -86,5 +87,63 @@ enum MediaType {
   AUDIO
   TEXT
   COMPLIMENT
+}
+
+// Story RPG Engine Models
+model StoryNode {
+  id        String   @id // e.g., "C1_S1", "C5_END1"
+  chapter   Int
+  scene     Int
+  text      String   @db.Text
+  createdAt DateTime @default(now())
+  
+  choices   StoryChoice[]
+  
+  @@index([chapter])
+}
+
+model StoryChoice {
+  id          String @id @default(uuid())
+  nodeId      String
+  node        StoryNode @relation(fields: [nodeId], references: [id])
+  
+  optionId    String  // e.g., "A", "B", "C"
+  label       String
+  nextNodeId  String
+  
+  // Stat effects
+  trustDelta     Int @default(0)
+  closenessDelta Int @default(0)
+  securityDelta  Int @default(0)
+  desireDelta    Int @default(0)
+  
+  @@unique([nodeId, optionId])
+}
+
+model PlayerStoryState {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  
+  // Current position
+  currentNodeId String @default("C1_S1")
+  
+  // Stats
+  trust     Int @default(50)
+  closeness Int @default(50)
+  security  Int @default(50)
+  desire    Int @default(50)
+  
+  // Choices made (for replay/analytics)
+  choiceHistory Json @default("[]")
+  
+  // Completion
+  isCompleted   Boolean @default(false)
+  endingReached String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([userId])
 }
 

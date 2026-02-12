@@ -175,7 +175,7 @@ export default function GameHub() {
                   {game.description}
                 </p>
 
-                <Link href={isVault ? '/vault' : `/play/${game.id}`} className="w-full">
+                <Link href={game.id === 'rpg' ? '/story' : (isVault ? '/vault' : `/play/${game.id}`)} className="w-full">
                   <Button 
                     className={`w-full py-6 rounded-full ${game.btnColor} text-white font-bold text-md shadow-md hover:shadow-lg transition-all transform group-hover:scale-[1.02] border-none`}
                   >

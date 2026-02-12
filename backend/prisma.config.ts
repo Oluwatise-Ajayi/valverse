@@ -9,5 +9,6 @@ export default defineConfig({
     },
     migrations: {
         path: 'prisma/migrations',
+        seed: 'npx tsx scripts/seed-story-nodes.ts',
     }
 });
