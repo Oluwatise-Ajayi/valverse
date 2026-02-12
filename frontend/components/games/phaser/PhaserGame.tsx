@@ -2,13 +2,43 @@
 
 import { useEffect, useRef, useState } from 'react';
 import * as Phaser from 'phaser';
-import { Heart } from 'lucide-react';
+import { Heart, Trophy } from 'lucide-react';
+
+const HIGH_SCORE_KEY = 'catchHeartsHighScore';
 
 export default function PhaserGame() {
   const gameRef = useRef<HTMLDivElement>(null);
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [gameOver, setGameOver] = useState(false);
+  const [highScore, setHighScore] = useState(0);
+  const [isNewHighScore, setIsNewHighScore] = useState(false);
+
+  // Load high score on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(HIGH_SCORE_KEY);
+      if (saved) {
+        setHighScore(parseInt(saved, 10));
+      }
+    }
+  }, []);
+
+  // Update high score when game ends
+  useEffect(() => {
+    if (gameOver && score > highScore) {
+      setHighScore(score);
+      setIsNewHighScore(true);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(HIGH_SCORE_KEY, score.toString());
+      }
+      
+      // Vibrate for high score celebration
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate([100, 50, 100, 50, 200]); // Celebration pattern
+      }
+    }
+  }, [gameOver, score, highScore]);
 
   useEffect(() => {
     if (!gameRef.current || typeof window === 'undefined') return;
@@ -100,7 +130,7 @@ export default function PhaserGame() {
         // Collision Handler
         this.physics.add.overlap(this.player, this.hearts, this.collectHeart, undefined, this);
 
-        // Mobile Touch Input
+        // Mobile Touch Input - UNRESTRICTED (works anywhere on screen)
         this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
             if (this.isGameOver) {
                 this.scene.restart();
@@ -109,11 +139,14 @@ export default function PhaserGame() {
                 setLives(3);
                 return;
             }
+            // Move player to pointer x position
             this.moveToPointer(pointer.x);
         });
 
+        // Allow dragging/swiping anywhere
         this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
             if (pointer.isDown && !this.isGameOver) {
+                // Follow finger/mouse position
                 this.moveToPointer(pointer.x);
             }
         });
@@ -183,9 +216,7 @@ export default function PhaserGame() {
         this.scoreValue += 1;
         this.scoreText.setText('Score: ' + this.scoreValue);
         setScore(this.scoreValue);
-        
-        // Flash effect
-        this.cameras.main.flash(100, 255, 192, 203, false);
+        // Flash effect removed per user request
       }
 
       loseLife() {
@@ -196,8 +227,13 @@ export default function PhaserGame() {
         const hearts = '❤️ '.repeat(this.livesValue) + '🖤 '.repeat(3 - this.livesValue);
         this.livesText.setText(hearts.trim());
         
-        // Camera shake effect
+        // Camera shake effect (user likes this!)
         this.cameras.main.shake(200, 0.005);
+        
+        // Vibration feedback on mobile
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+          navigator.vibrate(100); // Short vibration
+        }
 
         if (this.livesValue <= 0) {
           this.endGame();
@@ -344,8 +380,16 @@ export default function PhaserGame() {
         </div>
 
         {/* Score Display - Top Right */}
-        <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10 bg-white/90 px-4 py-2 rounded-full shadow-md">
-          <span className="text-pink-600 font-bold text-lg md:text-xl">Score: {score}</span>
+        <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10 space-y-1">
+          <div className="bg-white/90 px-4 py-2 rounded-full shadow-md">
+            <span className="text-pink-600 font-bold text-lg md:text-xl">Score: {score}</span>
+          </div>
+          {highScore > 0 && (
+            <div className="bg-yellow-400/90 px-3 py-1 rounded-full shadow-md flex items-center gap-1 justify-end">
+              <Trophy size={14} className="text-yellow-800" />
+              <span className="text-yellow-800 font-semibold text-xs md:text-sm">Best: {highScore}</span>
+            </div>
+          )}
         </div>
         
         {/* Game Container */}
@@ -358,7 +402,7 @@ export default function PhaserGame() {
         {/* Instructions */}
         {!gameOver && (
           <div className="absolute bottom-2 md:bottom-4 left-1/2 transform -translate-x-1/2 text-white text-xs md:text-sm opacity-80 pointer-events-none bg-black/30 px-4 py-2 rounded-full">
-            {lives > 0 ? 'Catch hearts! Don\'t let them fall!' : 'Game Over - Click to restart'}
+            {lives > 0 ? 'Swipe anywhere to move! Catch all hearts!' : 'Game Over - Click to restart'}
           </div>
         )}
 
@@ -366,11 +410,28 @@ export default function PhaserGame() {
         {gameOver && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
             <div className="bg-white rounded-2xl p-8 text-center shadow-2xl max-w-sm mx-4">
-              <h2 className="text-4xl font-bold text-red-500 mb-4">Game Over!</h2>
+              {isNewHighScore && (
+                <>
+                  <div className="mb-4 animate-bounce">
+                    <Trophy size={64} className="text-yellow-500 mx-auto" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-yellow-500 mb-2">NEW HIGH SCORE!</h2>
+                  <p className="text-lg text-gray-600 mb-4">🎉 Amazing! 🎉</p>
+                </>
+              )}
+              {!isNewHighScore && (
+                <h2 className="text-4xl font-bold text-red-500 mb-4">Game Over!</h2>
+              )}
               <p className="text-2xl font-semibold text-gray-700 mb-2">Final Score</p>
-              <p className="text-5xl font-bold text-pink-600 mb-6">{score}</p>
+              <p className="text-5xl font-bold text-pink-600 mb-2">{score}</p>
+              {highScore > score && (
+                <p className="text-sm text-gray-500 mb-4">Best: {highScore}</p>
+              )}
               <button 
-                onClick={() => window.location.reload()}
+                onClick={() => {
+                  setIsNewHighScore(false);
+                  window.location.reload();
+                }}
                 className="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full transition-colors shadow-lg"
               >
                 Play Again

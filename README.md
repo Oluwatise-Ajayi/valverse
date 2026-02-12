@@ -67,6 +67,9 @@ CLOUDINARY_CLOUD_NAME="your_cloud_name"
 CLOUDINARY_API_KEY="your_api_key"
 CLOUDINARY_API_SECRET="your_api_secret"
 
+# Gemini AI (Required for Compliment Generator)
+GEMINI_API_KEY="your_gemini_api_key"
+
 # Server Configuration
 PORT=4000
 FRONTEND_URL="http://localhost:3000"

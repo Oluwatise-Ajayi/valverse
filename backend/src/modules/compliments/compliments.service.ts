@@ -16,7 +16,7 @@ export class ComplimentsService {
         }
     }
 
-    async generate(interest: string, count: number = 20): Promise<string[]> {
+    async generate(interest: string, count: number = 10): Promise<string[]> {
         this.logger.log(`Attempting to generate ${count} compliments for interest: "${interest}"`);
 
         if (!this.genAI) {
