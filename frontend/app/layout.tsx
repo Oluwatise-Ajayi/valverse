@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Great_Vibes, Outfit } from "next/font/google"; // Google Fonts
 import "./globals.css";
+import MusicPlayer from "@/components/MusicPlayer";
+import FloatingControls from "@/components/FloatingControls";
 
 const greatVibes = Great_Vibes({
   subsets: ["latin"],
@@ -36,6 +38,8 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         {children}
+        <MusicPlayer />
+        <FloatingControls />
       </body>
     </html>
   );

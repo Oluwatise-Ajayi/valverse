@@ -20,6 +20,7 @@ model User {
   progress  Progress?
   sessions  Session[]
   storyState PlayerStoryState?
+  uploadedMedia Media[]
 }
 
 model Profile {
@@ -66,9 +67,12 @@ model Media {
   description String?  // Added for compliments and other  metadata
   type        MediaType // IMAGE, VIDEO, AUDIO, TEXT, COMPLIMENT
   url         String   // Cloudinary public ID or URL
-  requiredGame String  // The game ID required to unlock this
-  threshold   Json     // Logic: { "score": 100 } or { "completion": true }
+  requiredGame String?  // The game ID required to unlock this (Optional for uploads)
+  threshold   Json?     // Logic: { "score": 100 } or { "completion": true }
   
+  userId      String?   // If uploaded by user
+  user        User?     @relation(fields: [userId], references: [id])
+
   unlocks     Unlock[]
 }
 

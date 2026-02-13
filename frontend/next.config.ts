@@ -11,4 +11,7 @@ const nextConfig: NextConfig = {
   /* config options here */
 };
 
-export default withPWA(nextConfig);
+// Only use PWA plugin in production to avoid Turbopack conflicts
+const isDev = process.env.NODE_ENV === "development";
+
+export default isDev ? nextConfig : withPWA(nextConfig);

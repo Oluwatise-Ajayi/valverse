@@ -26,4 +26,11 @@ export class UsersService {
             include: { profile: true, progress: true },
         });
     }
+
+    async updateProfile(userId: string, data: Prisma.ProfileUpdateInput) {
+        return this.prisma.profile.update({
+            where: { userId },
+            data,
+        });
+    }
 }

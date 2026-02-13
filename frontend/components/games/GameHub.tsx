@@ -4,6 +4,9 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useGameStore } from '@/stores/useGameStore';
+import { useMusicStore } from '@/stores/useMusicStore';
+import { useAuthStore } from '@/stores/useAuthStore';
+import SettingsModal from '@/components/SettingsModal';
 import { 
   Flower2, 
   Heart, 
@@ -13,7 +16,8 @@ import {
   Image as ImageIcon,
   Music,
   Settings,
-  MessageCircle
+  MessageCircle,
+  Pause
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
@@ -94,15 +98,19 @@ const itemVariants = {
 
 export default function GameHub() {
   const { progress } = useGameStore();
+  const { isPlaying, togglePlay } = useMusicStore();
+  const { user, fetchUser } = useAuthStore();
   const [daysLoved, setDaysLoved] = useState(0);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {
+    fetchUser();
     const startDate = new Date('2025-10-02');
     const today = new Date();
     const diffTime = Math.abs(today.getTime() - startDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
     setDaysLoved(diffDays);
-  }, []);
+  }, [fetchUser]);
 
   return (
     <div className="min-h-screen bg-[#fff5f5] w-full font-outfit text-gray-800 pb-12">
@@ -110,19 +118,34 @@ export default function GameHub() {
       <header className="flex justify-between items-center px-6 py-4 md:px-10 md:py-6 max-w-7xl mx-auto w-full">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-pink-200 overflow-hidden relative border-2 border-white shadow-sm">
-             <img src="/assets/us_avatar.png" alt="Profile" className="object-cover w-full h-full" onError={(e) => {e.currentTarget.style.display = 'none'}} />
-             <div className="absolute inset-0 flex items-center justify-center text-xs">👩‍❤️‍👨</div>
+             <img 
+                src={user?.profile?.avatarUrl || "/assets/us_avatar.png"} 
+                alt="Profile" 
+                className="object-cover w-full h-full" 
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement?.querySelector('.fallback-emoji')?.classList.remove('hidden');
+                }} 
+             />
+             <div className="fallback-emoji absolute inset-0 flex items-center justify-center text-xs hidden">👩‍❤️‍👨</div>
+             {!user?.profile?.avatarUrl && <div className="absolute inset-0 flex items-center justify-center text-xs">👩‍❤️‍👨</div>}
           </div>
           <div>
-            <h1 className="text-xl font-bold leading-tight">Welcome Home, <span className="text-[#ff4d6d]">Babe</span></h1>
+            <h1 className="text-xl font-bold leading-tight">Welcome Home, <span className="text-[#ff4d6d]">{user?.profile?.nickname ? user.profile.nickname.split(' ')[0] : "Babe"}</span></h1>
             <p className="text-[10px] text-gray-400 uppercase tracking-wider">Ready for our special day?</p>
           </div>
         </div>
         <div className="flex gap-3">
-          <button className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-500 hover:bg-pink-200 transition-colors">
-            <Music size={18} />
+          <button 
+            onClick={togglePlay}
+            className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-500 hover:bg-pink-200 transition-colors"
+          >
+            {isPlaying ? <Pause size={18} /> : <Music size={18} />}
           </button>
-          <button className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-500 hover:bg-pink-200 transition-colors">
+          <button 
+            onClick={() => setIsSettingsOpen(true)}
+            className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-500 hover:bg-pink-200 transition-colors"
+          >
             <Settings size={18} />
           </button>
         </div>
@@ -220,6 +243,11 @@ export default function GameHub() {
       >
         <MessageCircle size={24} />
       </motion.button>
+
+      <SettingsModal 
+        isOpen={isSettingsOpen} 
+        onClose={() => setIsSettingsOpen(false)} 
+      />
     </div>
   );
 }
