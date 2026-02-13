@@ -43,10 +43,10 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
           {/* Modal */}
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-[90%] max-w-md max-h-[85vh] overflow-y-auto bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md rounded-3xl shadow-2xl z-[101] p-6 border border-white/20"
+            initial={{ scale: 0.9, opacity: 0, x: "-50%", y: "-50%" }}
+            animate={{ scale: 1, opacity: 1, x: "-50%", y: "-50%" }}
+            exit={{ scale: 0.9, opacity: 0, x: "-50%", y: "-50%" }}
+            className="fixed left-1/2 top-1/2 w-[95%] sm:w-[90%] max-w-md max-h-[85vh] overflow-y-auto bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md rounded-3xl shadow-2xl z-[101] p-6 border border-white/20"
           >
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold font-outfit text-pink-600 dark:text-pink-400">Settings</h2>

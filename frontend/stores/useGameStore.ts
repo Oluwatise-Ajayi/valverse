@@ -27,13 +27,24 @@ export const useGameStore = create<GameState>((set, get) => ({
     },
 
     updateValentine: async (answer) => {
+        // Optimistic update
+        set((state) => {
+            if (!state.progress) return state;
+            return {
+                progress: {
+                    ...state.progress,
+                    valentine: answer
+                }
+            };
+        });
+
         try {
-            // Optimistic update could go here, but for now wait for server
-            const { data } = await api.patch('/progress/valentine', { answer });
-            // Refresh full progress to ensure sync
-            await get().fetchProgress();
+            await api.patch('/progress/valentine', { answer });
+            // Background re-sync
+            get().fetchProgress();
         } catch (error) {
             console.error('Failed to update valentine status', error);
+            // Ideally revert state here on error
         }
     },
 

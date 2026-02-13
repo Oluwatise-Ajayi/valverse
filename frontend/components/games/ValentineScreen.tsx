@@ -14,9 +14,9 @@ export default function ValentineScreen() {
   const [noCount, setNoCount] = useState(0);
   const [showExplosion, setShowExplosion] = useState(false);
 
-  const handleYes = async () => {
+  const handleYes = () => {
     if (isAuthenticated) {
-      await updateValentine(true);
+      updateValentine(true);
     }
     router.push('/gateway'); // Go to Quiz
   };
