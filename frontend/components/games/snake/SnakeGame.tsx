@@ -51,6 +51,16 @@ const SnakeGame: React.FC = () => {
 
     // Touch Handling State
     const touchStartRef = useRef<Point | null>(null);
+    const bgImageRef = useRef<HTMLImageElement | null>(null);
+
+    // Load Background Image
+    useEffect(() => {
+        const img = new Image();
+        img.src = '/images/mybbygirl.jpeg';
+        img.onload = () => {
+            bgImageRef.current = img;
+        };
+    }, []);
 
     // --- Audio ---
     const playSound = useCallback((type: 'eat' | 'die' | 'powerup' | 'click') => {
@@ -276,11 +286,18 @@ const SnakeGame: React.FC = () => {
             const ctx = canvasRef.current?.getContext('2d');
             if (ctx) {
                 // Background
-                ctx.fillStyle = '#fff0f3'; // Light Pink Background
-                ctx.fillRect(0, 0, GRID_WIDTH * CELL_SIZE, GRID_HEIGHT * CELL_SIZE);
+                if (bgImageRef.current) {
+                    ctx.drawImage(bgImageRef.current, 0, 0, GRID_WIDTH * CELL_SIZE, GRID_HEIGHT * CELL_SIZE);
+                    // Add a semi-transparent overlay to ensure game elements are visible
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; // Lighter overlay for better visibility of the photo
+                    ctx.fillRect(0, 0, GRID_WIDTH * CELL_SIZE, GRID_HEIGHT * CELL_SIZE);
+                } else {
+                    ctx.fillStyle = '#fff0f3'; // Fallback Light Pink Background
+                    ctx.fillRect(0, 0, GRID_WIDTH * CELL_SIZE, GRID_HEIGHT * CELL_SIZE);
+                }
 
                 // Grid Lines
-                ctx.strokeStyle = '#ffccd5'; // Soft Pink
+                ctx.strokeStyle = 'rgba(255, 77, 109, 0.2)'; // More visible Soft Pink
                 ctx.lineWidth = 1;
                 for (let i = 1; i < GRID_WIDTH; i++) {
                     ctx.beginPath();

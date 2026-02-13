@@ -1,11 +1,59 @@
 'use client';
 
+// Letter Interface
+interface Letter {
+  id: string;
+  title: string;
+  content: string;
+  isOpen: boolean;
+  color: string;
+}
+
+const MOCK_LETTERS: Letter[] = [
+  {
+    id: 'l1',
+    title: 'Open when you miss me...',
+    content: "My love,i just want you to know if you miss e, im prolly missing you ilike 200 times more, cause youre special to me, youre my baby girl, my shatarata, the sugar in my tea and the cockroach in my cupboard, that cockroach real like mad, but never worry , im always with you, even whn you cant see me, i love you baby girl.",
+    isOpen: true,
+    color: 'bg-blue-100 text-blue-600'
+  },
+  {
+    id: 'l2',
+    title: 'Open when you are sad...',
+    content: "I hate that I can't be there to hug you right now. But imagine my arms wrapped tight around you.(maybe playing with your boobs a little) You are the strongest, most beautiful person I know. This moment will pass, but my love for you is permanent. Smile for me, baby? 🥺, i want you to smile knowing youre the most beautiful girl in the world.",
+    isOpen: true,
+    color: 'bg-indigo-100 text-indigo-600'
+  },
+  {
+    id: 'l3',
+    title: 'Open when you are mad at me...',
+    content: "Okay, I messed up. I'm sorry. You know I never want to hurt you or annoy you (even if I'm good at it). Take a deep breath. I love you more than any stupid argument. Let's fix this. I'm ready to listen. im ready to hear you out, cause it might most likely be your fault, just saying, sha dont chop my head off, and youre not going anywhere, sho ti gbo",
+    isOpen: true,
+    color: 'bg-red-100 text-red-600'
+  },
+  {
+    id: 'l4',
+    title: 'Open when you need a laugh...',
+    content: "just think of me, im a vibe, what else would you need for a laughter, but if you think of me, you might actually start falling in love again with me, it wouldnt be laughter at that point, anyhow, i love you baby girl, so please laugh for me",
+    isOpen: true,
+    color: 'bg-yellow-100 text-yellow-600'
+  },
+  {
+    id: 'l5',
+    title: "Open when you can't sleep...",
+    content: "sleeep ejoor, my angel, my one and only, sleep for me...idk how you want to do it but sleep oo, i know its prolly 3am and youve not slept, can you imagine, better close your eyes and sleep, so i dont vex for you, i love you baby girl, thank you for coming into my life, you can sleep knowing, ill always be here when you wake up",
+    isOpen: true,
+    color: 'bg-purple-100 text-purple-600'
+  }
+];
+
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useGameStore } from '@/stores/useGameStore';
 import api from '@/lib/api';
 import Link from 'next/link';
-import { ArrowLeft, Lock, Play, Pause, Image as ImageIcon, Video, Mic, Heart } from 'lucide-react';
+import { ArrowLeft, Lock, Play, Pause, Image as ImageIcon, Video, Mic, Heart, Mail, FileText, X, Key } from 'lucide-react';
+import { useAuthStore } from '@/stores/useAuthStore';
 import Image from 'next/image';
 
 // Media Item Interface
@@ -97,10 +145,34 @@ const MOCK_MEDIA: MediaItem[] = [
 ];
 
 export default function MediaVault() {
-  const { progress } = useGameStore(); // Use this for real unlock logic later
+  const { user } = useAuthStore();
+  const { progress } = useGameStore(); 
+  
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
   const [mediaItems, setMediaItems] = useState<MediaItem[]>(MOCK_MEDIA);
+  const [selectedLetter, setSelectedLetter] = useState<Letter | null>(null);
+  const [isVaultLocked, setIsVaultLocked] = useState(false); // Default to false, check effects
+  const [vaultKey, setVaultKey] = useState("");
+  const [errorShake, setErrorShake] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+     // Security Check
+     const nickname = user?.profile?.nickname?.toLowerCase().trim();
+     if (nickname !== 'sii baby') {
+         setIsVaultLocked(true);
+     }
+  }, [user]);
+
+  const handleUnlockAttempt = () => {
+      if (vaultKey.toLowerCase() === 'sii baby' || vaultKey === '1410') { // increased laxity for demo or specific pin
+          setIsVaultLocked(false);
+      } else {
+          setErrorShake(true);
+          setTimeout(() => setErrorShake(false), 500);
+      }
+  };
 
   // Fetch uploaded media on mount
   useEffect(() => {
@@ -172,6 +244,43 @@ export default function MediaVault() {
     }
   };
 
+  if (isVaultLocked) {
+      return (
+          <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4 font-outfit text-white">
+              <motion.div 
+                animate={errorShake ? { x: [-10, 10, -10, 10, 0] } : {}}
+                className="max-w-md w-full bg-gray-800 p-8 rounded-3xl border border-gray-700 shadow-2xl text-center"
+              >
+                  <div className="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Lock size={40} className="text-pink-500" />
+                  </div>
+                  <h1 className="text-3xl font-bold mb-2">Vault Locked</h1>
+                  <p className="text-gray-400 mb-8 text-sm">Biometric scan failed. Identify yourself.</p>
+                  
+                  <input 
+                    type="password" 
+                    placeholder="Enter Passcode / Identity"
+                    value={vaultKey}
+                    onChange={(e) => setVaultKey(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleUnlockAttempt()}
+                    className="w-full bg-gray-900 border border-gray-600 rounded-xl px-4 py-4 text-center text-xl tracking-widest mb-6 focus:border-pink-500 outline-none transition-colors"
+                  />
+                  
+                  <button 
+                    onClick={handleUnlockAttempt}
+                    className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-pink-900/20"
+                  >
+                      UNLOCK VAULT
+                  </button>
+                  
+                  <div className="mt-6 text-xs text-gray-500">
+                      <Link href="/hub" className="hover:text-gray-300 transition-colors">Return to Safety</Link>
+                  </div>
+              </motion.div>
+          </div>
+      )
+  }
+
   return (
     <div className="min-h-screen bg-[#fff5f5] w-full font-outfit p-6 md:p-12 pb-24 relative">
       <input 
@@ -213,6 +322,31 @@ export default function MediaVault() {
       </div>
 
       <div className="max-w-6xl mx-auto space-y-16">
+
+        {/* Letters Section */}
+        <section>
+           <div className="flex items-center gap-2 mb-6">
+            <span className="bg-blue-100 p-2 rounded-lg text-blue-500"><Mail size={24} /></span>
+            <h2 className="text-2xl font-bold text-gray-800">Open When...</h2>
+           </div>
+           
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+               {MOCK_LETTERS.map((letter) => (
+                   <motion.div
+                     key={letter.id}
+                     whileHover={{ y: -5 }}
+                     onClick={() => setSelectedLetter(letter)}
+                     className={`cursor-pointer ${letter.color} p-6 rounded-2xl shadow-sm border border-white/50 relative overflow-hidden group`}
+                   >
+                       <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                           <FileText size={48} />
+                       </div>
+                       <h3 className="font-bold text-lg mb-2 pr-8">{letter.title}</h3>
+                       <p className="text-xs font-medium opacity-70 uppercase tracking-widest">Tap to Read</p>
+                   </motion.div>
+               ))}
+           </div>
+        </section>
         
         {/* Pictures Section */}
         <section>
@@ -350,6 +484,47 @@ export default function MediaVault() {
         </section>
 
       </div>
+
+      {/* Letter Modal */}
+      <AnimatePresence>
+        {selectedLetter && (
+            <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                onClick={() => setSelectedLetter(null)}
+            >
+                <motion.div 
+                    initial={{ scale: 0.9, y: 20 }}
+                    animate={{ scale: 1, y: 0 }}
+                    exit={{ scale: 0.9, y: 20 }}
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-white max-w-lg w-full rounded-2xl shadow-2xl overflow-hidden relative"
+                >
+                    <div className={`p-8 ${selectedLetter.color} bg-opacity-20`}>
+                        <h2 className="text-2xl font-bold text-gray-800 pr-8">{selectedLetter.title}</h2>
+                        <button 
+                            onClick={() => setSelectedLetter(null)}
+                            className="absolute top-4 right-4 p-2 bg-white/50 rounded-full hover:bg-white transition-colors"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+                    <div className="p-8 max-h-[60vh] overflow-y-auto">
+                        <p className="text-lg leading-relaxed text-gray-700 whitespace-pre-wrap font-handwriting">
+                            {selectedLetter.content}
+                        </p>
+                        <div className="mt-8 pt-8 border-t border-gray-100 flex justify-end">
+                            <span className="font-[family-name:var(--font-great-vibes)] text-2xl text-pink-500">
+                                Always yours, x
+                            </span>
+                        </div>
+                    </div>
+                </motion.div>
+            </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
