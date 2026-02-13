@@ -1,12 +1,21 @@
-import { PrismaClient, MediaType } from '@prisma-local/client';
+import 'dotenv/config';
+import { PrismaClient, MediaType } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
 // Initialize Prisma with adapter (matching your PrismaService setup)
-const connectionString = process.env.DATABASE_URL || '';
-const pool = new Pool({ connectionString });
-const adapter = new PrismaPg(pool);
+console.log('Connecting with DATABASE_URL:', process.env.DATABASE_URL ? 'set' : 'unset');
 
+const connectionString = (process.env.DATABASE_URL || '').replace('sslmode=require', '');
+if (!connectionString) {
+    throw new Error('DATABASE_URL is not set');
+}
+
+const pool = new Pool({
+    connectionString,
+    ssl: { rejectUnauthorized: false }
+});
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {

@@ -20,8 +20,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@prisma-local/*": ["src/generated/prisma/*"]
-    },
+    "paths": {},
   }
 }

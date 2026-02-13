@@ -7,8 +7,11 @@ import { Pool } from 'pg';
 export class PrismaService extends PrismaClient implements OnModuleInit {
     constructor() {
         // 1. Create a standard PostgreSQL connection pool
-        const connectionString = process.env.DATABASE_URL;
-        const pool = new Pool({ connectionString });
+        const connectionString = (process.env.DATABASE_URL || '').replace('sslmode=require', '');
+        const pool = new Pool({
+            connectionString,
+            ssl: { rejectUnauthorized: false }
+        });
 
         // 2. Create the Prisma Driver Adapter
         const adapter = new PrismaPg(pool);
