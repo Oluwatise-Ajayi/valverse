@@ -37,7 +37,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/50 z-[100] backdrop-blur-sm"
             onClick={onClose}
           />
 
@@ -46,7 +46,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-[90%] max-w-md max-h-[90vh] overflow-y-auto bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md rounded-3xl shadow-2xl z-50 p-6 border border-white/20"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-[90%] max-w-md max-h-[85vh] overflow-y-auto bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md rounded-3xl shadow-2xl z-[101] p-6 border border-white/20"
           >
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold font-outfit text-pink-600 dark:text-pink-400">Settings</h2>
@@ -66,7 +66,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   <Music className="w-5 h-5 text-pink-500" />
                   <span>Background Music</span>
                 </div>
-                <div className="max-h-48 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-700">
+                <div className="rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden max-h-40 overflow-y-auto">
                   {TRACKS.map((track) => (
                     <button
                       key={track.id}
