@@ -1,4 +1,4 @@
-import { PrismaClient, MediaType } from '../src/generated/client';
+import { PrismaClient, MediaType } from '@prisma-local/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
