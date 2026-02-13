@@ -35,16 +35,23 @@ export class ProgressService {
     async updateGameState(userId: string, gameId: string, state: any) {
         const current = await this.getUserProgress(userId);
         const existingStates = (current.gameStates as Prisma.JsonObject) || {};
+        const existingGameData = (existingStates[gameId] as Prisma.JsonObject) || {};
 
-        // Merge new state
+        // Merge new state with existing game data to preserve other fields
+        const newGameData = {
+            ...existingGameData,
+            ...state,
+        };
+
+        // Update the top-level game states
         const newStates = {
             ...existingStates,
-            [gameId]: state,
+            [gameId]: newGameData,
         };
 
         return this.prisma.progress.update({
             where: { userId },
-            data: { gameStates: newStates },
+            data: { gameStates: newStates as Prisma.InputJsonValue },
         });
     }
 }

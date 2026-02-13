@@ -8,7 +8,7 @@ interface GameState {
     fetchProgress: () => Promise<void>;
     updateValentine: (answer: boolean) => Promise<void>;
     updateQuiz: (score: number) => Promise<void>;
-    updateGameScore: (gameId: string, state: any) => Promise<void>;
+    updateGameState: (gameId: string, state: any) => Promise<void>;
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -46,13 +46,12 @@ export const useGameStore = create<GameState>((set, get) => ({
         }
     },
 
-    updateGameScore: async (gameId, state) => {
+    updateGameState: async (gameId: string, state: any) => {
         try {
-            await api.post(`/progress/game/\${gameId}\
-            `, state);
+            await api.post(`/progress/game/${gameId}`, state);
             await get().fetchProgress();
         } catch (error) {
-            console.error('Failed to update game score', error);
+            console.error('Failed to update game state', error);
         }
     }
 }));

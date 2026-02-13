@@ -29,12 +29,18 @@ const ComplimentGenerator = dynamic(() => import('@/components/games/compliment/
   ssr: false
 });
 
+const SnakeGame = dynamic(() => import('@/components/games/snake/SnakeGame').then(mod => mod.default || (() => <div>Game Not Found</div>)), {
+  ssr: false,
+  loading: () => <div className="text-center p-10 font-bold text-[var(--accent)]">Loading Snake Kiss...</div>
+});
+
 const GAMES: Record<string, any> = {
   'bouquet': BouquetScene,
   'catch-hearts': PhaserGame,
   'scratch': ScratchCard,
   'rpg': LoveStoryRPG,
   'compliment': ComplimentGenerator,
+  'snake-kiss': SnakeGame,
 };
 
 export default function GamePage() {

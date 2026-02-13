@@ -17,7 +17,8 @@ import {
   Music,
   Settings,
   MessageCircle,
-  Pause
+  Pause,
+  Gamepad2
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
@@ -66,6 +67,15 @@ const GAMES = [
     color: 'bg-purple-100 text-purple-500', 
     btnColor: 'bg-[#ff4d6d] hover:bg-[#ff758f]',
     btnText: 'Scratch Away'
+  },
+  { 
+    id: 'snake-kiss', 
+    name: 'Snake Kiss', 
+    description: 'A classic game with a romantic twist. Collect hearts to grow our love.',
+    icon: Gamepad2, 
+    color: 'bg-emerald-100 text-emerald-500', 
+    btnColor: 'bg-[#ff4d6d] hover:bg-[#ff758f]',
+    btnText: 'Start Playing'
   },
   { 
     id: 'vault', 
@@ -160,7 +170,7 @@ export default function GameHub() {
           className="text-center mt-8 mb-12 space-y-4 max-w-2xl"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-pink-100 text-pink-600 rounded-full text-xs font-bold uppercase tracking-widest mx-auto">
-            <Heart size={12} fill="currentColor" /> 6 Mini Games Available
+            <Heart size={12} fill="currentColor" /> 7 Mini Games Available
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Choose Your Adventure</h2>
           <p className="text-gray-500 text-lg">
