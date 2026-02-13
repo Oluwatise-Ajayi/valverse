@@ -1,14 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import * as fs from 'fs';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  // Serve static assets from uploads folder
-  app.useStaticAssets(join(process.cwd(), 'uploads'), {
-    prefix: '/uploads',
-  });
+  // Serve static assets from uploads folder if it exists
+  const uploadDir = join(process.cwd(), 'uploads');
+  if (fs.existsSync(uploadDir)) {
+    app.useStaticAssets(uploadDir, {
+      prefix: '/uploads',
+    });
+  }
 
   // CORS Configuration
   const allowedOrigins = process.env.FRONTEND_URL

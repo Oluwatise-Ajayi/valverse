@@ -1,9 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { ConfigService } from '@nestjs/config';
+import { v2 as cloudinary } from 'cloudinary';
 
 @Injectable()
 export class MediaService {
-    constructor(private prisma: PrismaService) { }
+    constructor(
+        private prisma: PrismaService,
+        private configService: ConfigService,
+    ) {
+        // Configure Cloudinary
+        cloudinary.config({
+            cloud_name: this.configService.get<string>('CLOUDINARY_CLOUD_NAME'),
+            api_key: this.configService.get<string>('CLOUDINARY_API_KEY'),
+            api_secret: this.configService.get<string>('CLOUDINARY_API_SECRET'),
+        });
+    }
 
     async getRewardsByGame(gameId: string) {
         try {
@@ -25,23 +37,48 @@ export class MediaService {
         });
     }
 
-    async saveUserUpload(userId: string, title: string, url: string, type: 'IMAGE' | 'VIDEO' | 'AUDIO') {
-        const media = await this.prisma.media.create({
-            data: {
-                title,
-                url,
-                type,
-                userId,
-                // These are optional now for user uploads
-                requiredGame: null as any,
-                threshold: null as any,
-            },
-        });
+    async saveUserUpload(userId: string, file: Express.Multer.File) {
+        try {
+            // Determine type based on mimetype
+            const mime = file.mimetype.split('/')[0].toUpperCase();
+            let type: 'IMAGE' | 'VIDEO' | 'AUDIO' = 'IMAGE';
+            if (mime === 'AUDIO') type = 'AUDIO';
+            if (mime === 'VIDEO') type = 'VIDEO';
 
-        // Also create an Unlock record so it shows up as unlocked
-        // Wait, Unlocks link to Progress.
-        // User uploads are inherently unlocked. 
-        // We can just rely on fetching media by userId for the vault.
-        return media;
+            const resourceType = type === 'VIDEO' || type === 'AUDIO' ? 'video' : 'image';
+
+            // Upload to Cloudinary
+            const uploadResult = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    {
+                        resource_type: resourceType,
+                        folder: `valentine-uploads/${userId}`,
+                    },
+                    (error, result) => {
+                        if (error) reject(error);
+                        else resolve(result);
+                    }
+                );
+
+                uploadStream.end(file.buffer);
+            });
+
+            const media = await this.prisma.media.create({
+                data: {
+                    title: file.originalname,
+                    url: (uploadResult as any).secure_url,
+                    type,
+                    userId,
+                    // These are optional
+                    requiredGame: null as any,
+                    threshold: null as any,
+                },
+            });
+
+            return media;
+        } catch (error) {
+            console.error('Error in saveUserUpload:', error);
+            throw new InternalServerErrorException('Failed to upload file');
+        }
     }
 }
